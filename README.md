@@ -15,6 +15,8 @@ The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies,
 
 ## MSD2019 Task-05 Prostate
 
+<img width="724" height="233" alt="Image" src="https://github.com/user-attachments/assets/0e7a6b73-744c-4fd2-baba-857e7dfaca9f" />
+
 The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighted MPRAGE sequences. The main target regions in this dataset are the Anterior and Posterior parts of the Hippocampus, defined as segments of the hippocampus proper and the subiculum, respectively.
 
 ## Visualization of Segmentation Results
