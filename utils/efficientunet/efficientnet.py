@@ -1,0 +1,131 @@
+from torch.hub import load_state_dict_from_url
+from .utils import get_efficientnet_params, IMAGENET_WEIGHTS
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from .layers import Conv3dSamePadding, BatchNorm3d, Swish, MBConvBlock3D, custom_head3d
+from .utils import round_filters, round_repeats
+
+
+class EfficientNet3D(nn.Module):
+    """EfficientNet backbone adapted for 3D volumes"""
+
+    def __init__(self, block_args_list, global_params, in_ch=2):
+        super().__init__()
+        self.global_params = global_params
+        # BatchNorm params
+        bn_m = 1 - global_params.batch_norm_momentum
+        bn_e = global_params.batch_norm_epsilon
+
+        # Stem conv (single-channel input)
+        stem_out = round_filters(32, global_params)
+        self.conv_stem = Conv3dSamePadding(in_ch, stem_out,
+                                           kernel_size=3, stride=2,
+                                           bias=False, name='stem_conv')
+        self.bn0 = BatchNorm3d(stem_out, momentum=bn_m, eps=bn_e, name='stem_bn')
+        self.swish = Swish(name='stem_swish')
+
+        # MBConv blocks
+        self.blocks = nn.ModuleList()
+        idx = 0
+        for blk_args in block_args_list:
+            blk = blk_args._replace(
+                input_filters=round_filters(blk_args.input_filters, global_params),
+                output_filters=round_filters(blk_args.output_filters, global_params),
+                num_repeat=round_repeats(blk_args.num_repeat, global_params)
+            )
+            # first block
+            self.blocks.append(MBConvBlock3D(blk, global_params, idx))
+            idx += 1
+            # subsequent repeats
+            if blk.num_repeat > 1:
+                blk = blk._replace(input_filters=blk.output_filters, strides=[1,1,1])
+            for _ in range(blk.num_repeat - 1):
+                self.blocks.append(MBConvBlock3D(blk, global_params, idx))
+                idx += 1
+
+        # Head conv
+        head_in = blk.output_filters
+        head_out = round_filters(1280, global_params)
+        self.conv_head = Conv3dSamePadding(head_in, head_out, kernel_size=1, bias=False, name='head_conv')
+        self.bn1 = BatchNorm3d(head_out, momentum=bn_m, eps=bn_e, name='head_bn')
+
+        # Classifier
+        self.dropout_rate = global_params.dropout_rate
+        self.fc = nn.Linear(head_out, global_params.num_classes)
+
+    def forward(self, x):
+        # x: [B, 1, D, H, W]
+        x = self.conv_stem(x)
+        x = self.bn0(x)
+        x = self.swish(x)
+
+        for idx, block in enumerate(self.blocks):
+            dr = self.global_params.drop_connect_rate
+            if dr:
+                dr *= idx / len(self.blocks)
+            x = block(x, dr)
+
+        x = self.conv_head(x)
+        x = self.bn1(x)
+        x = self.swish(x)
+
+        # Global pooling
+        x = F.adaptive_avg_pool3d(x, 1).flatten(1)
+        if self.dropout_rate > 0:
+            x = F.dropout(x, p=self.dropout_rate, training=self.training)
+        x = self.fc(x)
+        return x
+
+    @classmethod
+    def from_name(cls, model_name, *, n_classes=1, in_ch=2, pretrained=False):
+        blocks, gparams = get_efficientnet_params(
+            model_name,
+            override_params={'num_classes': n_classes}
+        )
+        model = cls(blocks, gparams, in_ch=in_ch)
+        if pretrained:
+            try:
+                _ = load_state_dict_from_url(IMAGENET_WEIGHTS[model_name])
+            except KeyError:
+                pass
+        return model
+
+    @classmethod
+    def encoder(cls, model_name, *, in_ch=2, pretrained=False):
+        base = cls.from_name(model_name, in_ch=in_ch, pretrained=pretrained)
+        class Encoder3D(nn.Module):
+            def __init__(self, base_model):
+                super().__init__()
+                self.stem_conv = base_model.conv_stem
+                self.stem_bn = base_model.bn0
+                self.stem_swish = Swish(name='enc_stem_swish')
+                self.blocks = base_model.blocks
+                self.head_conv = base_model.conv_head
+                self.head_bn = base_model.bn1
+                self.head_swish = Swish(name='enc_head_swish')
+
+            def forward(self, x):
+                x = self.stem_conv(x)
+                x = self.stem_bn(x)
+                x = self.stem_swish(x)
+                for idx, block in enumerate(self.blocks):
+                    dr = base.global_params.drop_connect_rate
+                    if dr:
+                        dr *= idx / len(self.blocks)
+                    x = block(x, dr)
+                x = self.head_conv(x)
+                x = self.head_bn(x)
+                x = self.head_swish(x)
+                return x
+        return Encoder3D(base)
+
+    @classmethod
+    def custom_head(cls, model_name, *, n_classes=1, pretrained=False):
+        # projection head for segmentation or classification
+        return custom_head3d(1280, n_classes)
+
+
+def _get_model_by_name(model_name, classes=1000, pretrained=False):
+    return EfficientNet3D.from_name(model_name, n_classes=classes, pretrained=pretrained)
