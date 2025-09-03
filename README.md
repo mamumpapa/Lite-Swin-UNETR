@@ -23,6 +23,6 @@ The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighte
 
 We report both the segmentation performance and model complexity. Our proposed Lite Swin UNETR achieves favorable segmentation performance against existing methods, while being considerably reducing the model complexity. Best results are in bold. 
 
-<img width="713" height="308" alt="Image" src="https://github.com/user-attachments/assets/e242c678-db70-48dd-b81c-9bb138043a7e" />
+<img width="500" height="418" alt="Image" src="https://github.com/user-attachments/assets/b08a9223-fa4e-447c-af6a-03a868fa6ba7" />
 
-<img width="690" height="578" alt="Image" src="https://github.com/user-attachments/assets/e971da98-134c-4486-abfc-1622db115764" />
+<img width="504" height="220" alt="Image" src="https://github.com/user-attachments/assets/0f3f2360-2e1c-4ef6-bca3-3a3dfcebdffb" />
