@@ -26,3 +26,15 @@ We report both the segmentation performance and model complexity. Our proposed L
 <img width="632" height="276" alt="Image" src="https://github.com/user-attachments/assets/833934c5-6996-4a1e-9f8b-fcd1428397e4" />
 
 <img width="626" height="528" alt="Image" src="https://github.com/user-attachments/assets/fcb78170-8dd7-4723-a5af-39b57c9da808" />
+
+# Bixtex
+```bib
+@article{park2025lite,
+  title={Lite Swin UNETR: A Lightweight Version of Swin UNETR for Efficient 3D Medical Image Segmentation},
+  author={Park, Junyoung and Park, Minyoung and Jeong, Taikyeong and Yu, Sungwook},
+  journal={Journal of Electrical Engineering \& Technology},
+  pages={1--15},
+  year={2025},
+  publisher={Springer}
+}
+```
