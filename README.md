@@ -4,7 +4,7 @@
 # Dataset
 
 Medical Segmentation Decathlon (MSD) is a collection of public datasets for 3D medical image segmentation. This dataset is widely utilized to evaluate and validate the segmentation model performance of various organs. 
-You can download this dataset from [this link](http://medicaldecathlon.com/).
+You can download MSD dataset from [this link](http://medicaldecathlon.com/).
 
 ## MSD2019 Task-04 Hippocampus
 
