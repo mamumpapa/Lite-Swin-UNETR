@@ -19,5 +19,6 @@ The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies,
 
 The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighted MPRAGE sequences. The main target regions in this dataset are the Anterior and Posterior parts of the Hippocampus, defined as segments of the hippocampus proper and the subiculum, respectively.
 
-## Visualization of Segmentation Results
+## Results
 
+We report both the segmentation performance and model complexity. Our proposed Lite Swin UNETR achieves favorable segmentation performance against existing methods, while being considerably reducing the model complexity. Best results are in bold. 
