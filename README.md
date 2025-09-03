@@ -8,6 +8,8 @@ You can download MSD dataset from [this link](http://medicaldecathlon.com/).
 
 ## MSD2019 Task-04 Hippocampus
 
+<img width="724" height="237" alt="Image" src="https://github.com/user-attachments/assets/c1a0f488-6034-41d6-a6b9-361628d34c62" />
+
 The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies, incorporating two modalities: T2-weighted and Apparent Diffusion Coefficient (ADC) sequences. Segmentation in this paper targeted two primary regions within the prostate: the Prostate Peripheral Zone (PZ) and the Transition Zone (TZ).
 
 
