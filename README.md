@@ -6,6 +6,21 @@
 Medical Segmentation Decathlon (MSD) is a collection of public datasets for 3D medical image segmentation. This dataset is widely utilized to evaluate and validate the segmentation model performance of various organs. 
 You can download MSD dataset from [this link](http://medicaldecathlon.com/).
 
+The dataset folders for Hippocampus and Prostate should be organized as follows:
+```
+./data/
+  ├── Task04_Hippocampus/
+      ├── imagesTr/
+      ├── imagesTs/
+      ├── labelsTr/
+      ├── dataset.json
+  ├── Task05_Prostate/
+      ├── imagesTr/
+      ├── imagesTs/
+      ├── labelsTr/
+      ├── dataset.json
+ ```
+
 ## MSD2019 Task-04 Hippocampus
 
 <img width="911" height="400" alt="Image" src="https://github.com/user-attachments/assets/b245bff8-58d2-4156-a27a-60fd3ebe674b" />
@@ -18,6 +33,17 @@ The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies,
 <img width="909" height="401" alt="Image" src="https://github.com/user-attachments/assets/07c2d506-a1cc-4193-84ea-f74085511ef7" />
 
 The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighted MPRAGE sequences. The main target regions in this dataset are the Anterior and Posterior parts of the Hippocampus, defined as segments of the hippocampus proper and the subiculum, respectively.
+
+# Training
+
+The following scripts can be used for training our Lite Swin UNETR model on the datasets:
+```bash
+python MSD_Hippocampus.py
+python MSD_Prostate.py
+```
+
+
+
 
 ## Performance and Efficiency
 
