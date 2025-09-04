@@ -119,25 +119,17 @@ val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=0, pin_
 test_loader = DataLoader(test_ds, batch_size=1, shuffle=False, num_workers=0, pin_memory=True)
 
 
-from utils.efficientunet.efficientunet import get_efficientunet3d_b0
+from utils.advanced_swin_unetr import SwinUNETR
 
 
-from torchsummary import summary
-from thop import profile
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-Img_size=128
-in_channels=2
-data = torch.randn((1, in_channels, Img_size, Img_size, Img_size), device=device)
-model = get_efficientunet3d_b0(
+model = SwinUNETR(
+    img_size=IMAGE_SIZE,
+    in_channels=IN_CHANNEL,
     out_channels=NUM_CLASS,
-    concat_input=True,
-    pretrained=False
-)
-model = model.to(device)
-print(model(data).size())
-summary(model, input_size=(in_channels, Img_size, Img_size, Img_size))
-flops, params = profile(model, inputs=(data,))
-print(f"FLOPs: {flops}, Parameters: {params}")
+    feature_size=12,
+    use_checkpoint=False,
+).float()
+
 
 
 model = model.to(DEVICE)
