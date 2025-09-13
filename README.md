@@ -25,14 +25,14 @@ The dataset folders for Hippocampus and Prostate should be organized as follows:
 
 <img width="911" height="400" alt="Image" src="https://github.com/user-attachments/assets/b245bff8-58d2-4156-a27a-60fd3ebe674b" />
 
-The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies, incorporating two modalities: T2-weighted and Apparent Diffusion Coefficient (ADC) sequences. Segmentation in this paper targeted two primary regions within the prostate: the Prostate Peripheral Zone (PZ) and the Transition Zone (TZ).
+The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighted MPRAGE sequences. The main target regions in this dataset are the Anterior and Posterior parts of the Hippocampus, defined as segments of the hippocampus proper and the subiculum, respectively.
 
 
 ## MSD2019 Task-05 Prostate
 
 <img width="909" height="401" alt="Image" src="https://github.com/user-attachments/assets/07c2d506-a1cc-4193-84ea-f74085511ef7" />
 
-The Hippocampus dataset consists of 394 3D MRI images, acquired using T1-weighted MPRAGE sequences. The main target regions in this dataset are the Anterior and Posterior parts of the Hippocampus, defined as segments of the hippocampus proper and the subiculum, respectively.
+The Prostate dataset comprises 48 prostate multiparametric MRI (mp-MRI) studies, incorporating two modalities: T2-weighted and Apparent Diffusion Coefficient (ADC) sequences. Segmentation in this paper targeted two primary regions within the prostate: the Prostate Peripheral Zone (PZ) and the Transition Zone (TZ).
 
 # Training
 
